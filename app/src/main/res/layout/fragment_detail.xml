@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/detail_title_textview"
+         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MovieTitle"
+        android:text="Star Wars: The Force Awakens" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:id="@+id/detail_poster_imageview"
+            style="@style/MoviePosterDetail"
+            android:src="@drawable/sw_image"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MovieInfoHeader"
+                android:text="Release date:" />
+
+            <TextView
+                android:id="@+id/detail_release_date_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MovieInfoGeneric"
+                android:text="Dec 28, 2015"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/movie_content_vertical_gap" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MovieInfoHeader"
+                android:text="Rating:" />
+
+            <TextView
+                android:id="@+id/detail_rating_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MovieInfoRating"
+                android:text="7.85"    />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_content_vertical_gap" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/MovieInfoHeader"
+        android:text="Synopsis:" />
+
+    <TextView
+        android:id="@+id/detail_synopsis_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MovieInfoSynopsis"
+        android:text="Synopsis here"/>
+
+</LinearLayout>
+
+</ScrollView>

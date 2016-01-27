@@ -1,0 +1,72 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Movie poster image styles -->
+
+    <style name="MoviePosterGrid">
+        <item name="android:layout_width">@dimen/movie_poster_grid_width</item>
+        <item name="android:layout_height">@dimen/movie_poster_grid_height</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MoviePosterDetail">
+        <item name="android:layout_width">@dimen/movie_poster_detail_width</item>
+        <item name="android:layout_height">@dimen/movie_poster_detail_height</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <!-- Detail Fragment styles -->
+    <style name="MovieTitle">
+        <item name="android:background">@color/movieTitleBackgroundColor</item>
+        <item name="android:textColor">@color/movieTitleFontColor</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/movie_content_vertical_gap</item>
+        <item name="android:paddingBottom">@dimen/movie_content_vertical_gap</item>
+    </style>
+
+    <style name="MovieInfoHeader">
+        <item name="android:textColor">@color/movieInfoHeaderColor</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/movie_content_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/movie_content_horizontal_margin</item>
+    </style>
+
+    <style name="MovieInfoGeneric">
+        <item name="android:textColor">@color/movieInfoContentColor</item>
+        <item name="android:textSize">17dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">@dimen/movie_content_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/movie_content_horizontal_margin</item>
+    </style>
+
+    <style name="MovieInfoRating">
+        <item name="android:textColor">@color/movieInfoContentColor</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">@dimen/movie_content_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/movie_content_horizontal_margin</item>
+    </style>
+
+    <style name="MovieInfoSynopsis">
+        <item name="android:textColor">@color/movieInfoContentColor</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">@dimen/movie_content_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/movie_content_horizontal_margin</item>
+    </style>
+
+
+</resources>
