@@ -37,6 +37,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         ImageView posterView = (ImageView) convertView.findViewById(R.id.grid_item_movie_imageview);
 
+        posterView.setImageResource(R.drawable.no_poster);
         Picasso.with(getContext()).load(item.getPoster()).into(posterView);
 
         return convertView;
