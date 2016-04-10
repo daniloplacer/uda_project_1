@@ -6,6 +6,10 @@
 
     <color name="movieTitleBackgroundColor">#1565c0</color>
     <color name="movieTitleFontColor">#ffffff</color>
-    <color name="movieInfoHeaderColor">#000000</color>
+    <color name="movieInfoHeaderColor">#1565c0</color>
     <color name="movieInfoContentColor">#000000</color>
+
+    <color name="movieButtonFavoriteTextColor">#000000</color>
+    <color name="movieButtonFavoriteBackgroundColor">#ffc107</color>
+
 </resources>

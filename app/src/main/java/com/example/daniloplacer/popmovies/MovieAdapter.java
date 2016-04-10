@@ -30,7 +30,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         Movie item = getItem(position);
 
-        // Tries to recycle the view, but if not existant, creates a new one
+        // Tries to recycle the view, but if not existent, creates a new one
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie, parent, false);
         }

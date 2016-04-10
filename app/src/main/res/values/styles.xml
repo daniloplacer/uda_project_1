@@ -66,7 +66,59 @@
         <item name="android:gravity">left</item>
         <item name="android:paddingLeft">@dimen/movie_content_horizontal_margin</item>
         <item name="android:paddingRight">@dimen/movie_content_horizontal_margin</item>
+        <item name="android:maxLines">5</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="MovieFavoriteSwitch">
+        <item name="android:textColor">@color/movieButtonFavoriteTextColor</item>
+        <item name="android:background">@color/movieButtonFavoriteBackgroundColor</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:gravity">center_vertical</item>
+
+        <item name="android:paddingLeft">@dimen/movie_switch_layout_padding</item>
+        <item name="android:paddingRight">@dimen/movie_switch_layout_padding</item>
+        <item name="android:switchPadding">@dimen/movie_switch_padding</item>
+        <item name="android:layout_marginLeft">@dimen/movie_switch_margin_left</item>
+    </style>
+
+    <style name="TrailerItemImage">
+        <item name="android:layout_marginLeft">@dimen/trailer_item_image_left_margin</item>
+    </style>
+
+    <style name="TrailerItemText">
+        <item name="android:textColor">@color/movieInfoContentColor</item>
+        <item name="android:textSize">17dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">@dimen/trailer_item_text_left_margin</item>
+    </style>
+
+    <style name="ReviewItemAuthor">
+        <item name="android:textColor">@color/movieInfoContentColor</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/movie_content_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/movie_content_horizontal_margin</item>
+    </style>
+
+    <style name="ReviewItemText">
+        <item name="android:textColor">@color/movieInfoContentColor</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">@dimen/movie_content_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/movie_content_horizontal_margin</item>
+        <item name="android:maxLines">5</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:paddingBottom">@dimen/movie_content_vertical_gap</item>
+    </style>
+
+    <style name="NoMovie">
+        <item name="android:textColor">@color/movieInfoContentColor</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+    </style>
 
 </resources>

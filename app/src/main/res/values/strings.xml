@@ -10,23 +10,49 @@
     <string name="pref_sort_default" translatable="false">@string/pref_sort_popular_value</string>
 
     <string name="pref_sort_popular_entry" translatable="false">Popular</string>
-    <string name="pref_sort_popular_value" translatable="false">popularity.desc</string>
+    <string name="pref_sort_rating_entry" translatable="false">Top Rated</string>
 
-    <string name="pref_sort_rating_entry" translatable="false">User rating</string>
-    <string name="pref_sort_rating_value" translatable="false">vote_average.desc</string>
+    <!-- Will also be used in API calls -->
+    <string name="pref_sort_popular_value" translatable="false">popular</string>
+    <string name="pref_sort_rating_value" translatable="false">top_rated</string>
+
+    <string name="pref_sort_favorites_entry" translatable="false">Favorites</string>
+    <string name="pref_sort_favorites_value" translatable="false">favorites</string>
 
     <!-- API params -->
-    <string name="api_base" translatable="false">http://api.themoviedb.org/3/discover/movie</string>
-    <string name="api_param_sort_name" translatable="false">sort_by</string>
+    <string name="api_base" translatable="false">http://api.themoviedb.org/3/movie</string>
+
+    <string name="api_trailer" translatable="false">videos</string>
+    <string name="api_reviews" translatable="false">reviews</string>
+
     <string name="api_param_key_name" translatable="false">api_key</string>
-    <string name="api_param_key_value" translatable="false"> ADD HERE </string>
+    <string name="api_param_key_value" translatable="false">ADD KEY HERE!</string>
 
     <!-- Movies JSON definition -->
-    <string name="json_array" translatable="false">results</string>
-    <string name="json_item_title" translatable="false">title</string>
-    <string name="json_item_poster" translatable="false">poster_path</string>
-    <string name="json_item_synopsis" translatable="false">overview</string>
-    <string name="json_item_rating" translatable="false">vote_average</string>
-    <string name="json_item_release_date" translatable="false">release_date</string>
+    <string name="json_movie_array" translatable="false">results</string>
+    <string name="json_movie_item_id" translatable="false">id</string>
+    <string name="json_movie_item_title" translatable="false">title</string>
+    <string name="json_movie_item_poster" translatable="false">poster_path</string>
+    <string name="json_movie_item_synopsis" translatable="false">overview</string>
+    <string name="json_movie_item_rating" translatable="false">vote_average</string>
+    <string name="json_movie_item_popularity" translatable="false">popularity</string>
+    <string name="json_movie_item_release_date" translatable="false">release_date</string>
+
+    <!-- Trailers JSON definition -->
+    <string name="json_trailer_array" translatable="false">results</string>
+    <string name="json_trailer_key" translatable="false">key</string>
+    <string name="json_trailer_site" translatable="false">site</string>
+    <string name="json_trailer_type" translatable="false">type</string>
+
+    <string name="json_trailer_type_value_trailer" translatable="false">Trailer</string>
+    <string name="json_trailer_site_value_youtube" translatable="false">YouTube</string>
+
+    <string name="youtube_base_url" translatable="false">https://www.youtube.com/watch?v=</string>
+
+    <!-- Reviews JSON definition -->
+    <string name="json_review_array" translatable="false">results</string>
+    <string name="json_review_author" translatable="false">author</string>
+    <string name="json_review_content" translatable="false">content</string>
+    <string name="json_review_url" translatable="false">url</string>
 
 </resources>

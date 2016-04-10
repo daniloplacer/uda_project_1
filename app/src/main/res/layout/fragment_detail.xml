@@ -66,6 +66,17 @@
                 style="@style/MovieInfoRating"
                 android:text="7.85"    />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/movie_content_vertical_gap" />
+
+            <Switch
+                android:id="@+id/detail_favorite_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MovieFavoriteSwitch"
+                android:text="Favorite"    />
+
         </LinearLayout>
 
     </LinearLayout>
@@ -86,6 +97,46 @@
         android:layout_height="wrap_content"
         style="@style/MovieInfoSynopsis"
         android:text="Synopsis here"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_content_vertical_gap" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/MovieInfoHeader"
+        android:text="Trailers:" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_content_vertical_gap" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/trailers_container"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_content_vertical_gap" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/MovieInfoHeader"
+        android:text="Reviews:" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_content_vertical_gap" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/reviews_container"/>
 
 </LinearLayout>
 

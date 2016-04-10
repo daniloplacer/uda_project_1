@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
@@ -14,19 +13,21 @@ import java.util.StringTokenizer;
  */
 public class Movie implements Parcelable {
 
+    private String mId;
     private String mTitle;
     private String mPoster;
     private String mSynopsis;
     private String mRating;
     private String mReleaseDate;
+    private double mPopularity;
+    private boolean mFavorite;
 
     private final String BASE = "http://image.tmdb.org/t/p/";
     private final String SIZE = "w185";
 
-    private final String DATE_FORMAT_INPUT = "MMMM dd, yyyy";
-    private final String DATE_FORMAT_OUTPUT = "MMMM dd, yyyy";
-
-    public Movie(String title, String poster, String synopsis, String rating, String releaseDate){
+    public Movie(String id, String title, String poster, String synopsis,
+                 String rating, String releaseDate, double popularity, boolean favorite){
+        this.mId = id;
         this.mTitle = title;
 
         this.mSynopsis = synopsis;
@@ -37,41 +38,13 @@ public class Movie implements Parcelable {
         else
             this.mPoster = BASE + SIZE + poster;
 
-        this.mReleaseDate = dateParser(releaseDate);
+        this.mReleaseDate = releaseDate;
+        this.mPopularity = popularity;
+        this.mFavorite = favorite;
     }
 
-
-    // check if its a valid date
-    boolean isValidDate(String input) {
-        if (input == null)
-            return false;
-
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_INPUT);
-
-        try {
-            format.parse(input);
-            return true;
-        }
-        catch(ParseException e){
-            return false;
-        }
-    }
-
-    // Receives a date like "YYYY-MM-DD" and returns a date like defined by DATE_FORMAT
-    private String dateParser(String date){
-
-        if (!isValidDate(date))
-            return null;
-
-        StringTokenizer tok = new StringTokenizer(date,"-");
-        int year = Integer.parseInt(tok.nextToken());
-        int month = Integer.parseInt(tok.nextToken());
-        int day = Integer.parseInt(tok.nextToken());
-
-        GregorianCalendar calendar = new GregorianCalendar(year, month, day);
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_OUTPUT);
-        format.setCalendar(calendar);
-        return format.format(calendar.getTime());
+    public String getId() {
+        return mId;
     }
 
     public String getTitle() {
@@ -94,23 +67,41 @@ public class Movie implements Parcelable {
         return mReleaseDate;
     }
 
+    public double getPopularity() {
+        return mPopularity;
+    }
+
+    public boolean isFavorite() {
+        return mFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.mFavorite = favorite;
+    }
+
     // METHODS RELATED TO PARCELABLE IMPLEMENTATION
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
+        out.writeString(mId);
         out.writeString(mTitle);
         out.writeString(mPoster);
         out.writeString(mSynopsis);
         out.writeString(mRating);
         out.writeString(mReleaseDate);
+        out.writeDouble(mPopularity);
+        out.writeByte((byte) (mFavorite? 1:0));
     }
 
     private Movie(Parcel in) {
+        mId = in.readString();
         mTitle = in.readString();
         mPoster = in.readString();
         mSynopsis = in.readString();
         mRating = in.readString();
         mReleaseDate = in.readString();
+        mPopularity = in.readDouble();
+        mFavorite = in.readByte() != 0;
     }
 
     @Override

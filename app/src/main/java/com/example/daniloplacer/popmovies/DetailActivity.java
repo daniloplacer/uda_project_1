@@ -1,23 +1,15 @@
 package com.example.daniloplacer.popmovies;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
+import android.view.MenuItem;
 
 /**
  * Created by daniloplacer on 1/23/16.
  */
-public class DetailActivity extends ActionBarActivity {
-
+public class DetailActivity extends ActionBarActivity implements DetailFragment.Callback{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,52 +18,25 @@ public class DetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_detail);
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.detail_container, new DetailFragment())
+                    .add(R.id.movie_detail_container, new DetailFragment())
                     .commit();
         }
     }
 
-    // Fragment that will Display the additional information about the movie
-    public static class DetailFragment extends Fragment {
-
-        public DetailFragment() {
+    // Needs to override the behavior of the back button otherwise
+    // the activity doesn't finish. We need it to finish in order to
+    // send result back to GridFragment/MainActivity
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-
-            // When the Fragment is created, gets movie info from Intent,
-            // and shows its info through the Fragments components
-            Intent intent = getActivity().getIntent();
-            if (intent != null && intent.hasExtra(Movie.class.getSimpleName())){
-
-                // Retrieves the Movie object sent via intent, which is a Parcelable
-                Movie movie = (Movie) intent.getParcelableExtra(Movie.class.getSimpleName());
-
-                TextView detailTextView = (TextView) rootView.findViewById(R.id.detail_title_textview);
-                detailTextView.setText(movie.getTitle());
-
-                detailTextView = (TextView) rootView.findViewById(R.id.detail_release_date_textview);
-                detailTextView.setText(movie.getReleaseDate());
-
-                detailTextView = (TextView) rootView.findViewById(R.id.detail_rating_textview);
-                detailTextView.setText(movie.getRating());
-
-                detailTextView = (TextView) rootView.findViewById(R.id.detail_synopsis_textview);
-                detailTextView.setText(movie.getSynopsis());
-
-                ImageView detailImageView = (ImageView) rootView.findViewById(R.id.detail_poster_imageview);
-                Picasso.with(getContext()).load(movie.getPoster()).into(detailImageView);
-
-            }
-
-            return rootView;
+        else {
+            return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void changeFavoriteValue(String movieId, boolean newFavoriteValue) {}
 }
