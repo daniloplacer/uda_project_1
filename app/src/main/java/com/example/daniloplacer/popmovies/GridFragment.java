@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.daniloplacer.popmovies.data.MovieContract;
 
@@ -34,6 +35,13 @@ public class GridFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private ArrayList<Movie> moviesArray;
     MovieAdapter movieAdapter;
+    // In case detail page is opened, favorite value may change, so refreshes the data
+    private boolean mNeedsRefresh;
+    private String mPreviousSorting;
+
+    static final String STATE_MOVIES_ARRAY = "movies_array";
+    static final String STATE_NEEDS_REFRESH = "needs_refresh";
+    static final String STATE_PREVIOUS_SORTING = "previous_sorting";
 
     private static final int MOVIE_LOADER_ID = 0;
 
@@ -62,61 +70,66 @@ public class GridFragment extends Fragment implements LoaderManager.LoaderCallba
 
     public GridFragment() {}
 
-    // Auxiliary method that uploads the favorite value for movie with ID = movieId
-    // Returns the movie object if Movie was found and favorite value updated. Otherwise, returns null
-    private Movie updateFavoriteMovieInArray(String movieId, boolean favorite) {
-
-        for (int i=0; i<moviesArray.size(); i++) {
-            Movie movie = moviesArray.get(i);
-
-            if (movie.getId().compareTo(movieId) == 0){
-                movie.setFavorite(favorite);
-                return movie;
-            }
-        }
-
-        return null;
-    }
-
-    public void updateFavoriteMovie(String movieId, boolean newFavoriteValue) {
-
-        // Updates the movie array with the new favorite value
-        Movie favoriteMovie = updateFavoriteMovieInArray(movieId, newFavoriteValue);
-        Log.v(LOG_TAG, "Changing favorite value of movie ID " + movieId + " to " + newFavoriteValue);
-
-        // If favorite value changed to true, needs to add it to the database
-        if (newFavoriteValue == true) {
-            insertFavoriteMovie(favoriteMovie);
-        } else {
-            // Otherwise, it changed to false, and needs to remove it from the database
-            deleteFavoriteMovie(movieId);
-        }
-
-    }
-
     @Override
-    public void onStart() {
-        super.onStart();
-        Log.v(LOG_TAG, "Starting fragment");
-        updateMovies();
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelableArrayList(STATE_MOVIES_ARRAY, moviesArray);
+        savedInstanceState.putBoolean(STATE_NEEDS_REFRESH, mNeedsRefresh);
+        savedInstanceState.putString(STATE_PREVIOUS_SORTING, mPreviousSorting);
+
+        super.onSaveInstanceState(savedInstanceState);
     }
 
-    // Starts the loader to get info from database and internet again
-    public void updateMovies(){
+    private void updateMovies(){
         Log.v(LOG_TAG, "Will start updating movies");
         getLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mNeedsRefresh ||
+                (Utility.getPreferredSorting(getActivity()).compareTo(mPreviousSorting) !=0)) {
+
+            mNeedsRefresh = false;
+            mPreviousSorting = Utility.getPreferredSorting(getActivity());
+            updateMovies();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.v(LOG_TAG, "Creating a new view");
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // creating a new adapter with empty data
-        movieAdapter = new MovieAdapter(getActivity(), new ArrayList<Movie>());
+        // Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
 
+            mNeedsRefresh = savedInstanceState.getBoolean(STATE_NEEDS_REFRESH);
+            mPreviousSorting = savedInstanceState.getString(STATE_PREVIOUS_SORTING);
+
+            // In case changed sorting, needs to refresh data
+            if (Utility.getPreferredSorting(getActivity()).compareTo(mPreviousSorting) !=0) {
+                mNeedsRefresh = true;
+            }
+
+            if (mNeedsRefresh) {
+                movieAdapter = new MovieAdapter(getActivity(), new ArrayList<Movie>());
+                updateMovies();
+            } else {
+                moviesArray = savedInstanceState.getParcelableArrayList(STATE_MOVIES_ARRAY);
+                movieAdapter = new MovieAdapter(getActivity(), moviesArray);
+            }
+
+        } else {
+            Log.v(LOG_TAG, "Creating a new view");
+            movieAdapter = new MovieAdapter(getActivity(), new ArrayList<Movie>());
+            updateMovies();
+        }
+
+        mNeedsRefresh = false;
+        mPreviousSorting = Utility.getPreferredSorting(getActivity());
         // binding adapter to grid view
         GridView grid = (GridView) rootView.findViewById(R.id.movies_grid);
         grid.setAdapter(movieAdapter);
@@ -127,13 +140,12 @@ public class GridFragment extends Fragment implements LoaderManager.LoaderCallba
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                mNeedsRefresh = true;
                 mListener.onItemSelected(moviesArray.get(position));
-
             }
+
         });
 
-        // no need to call updateMovies here because its going to be called at onStart
         return rootView;
     }
 
@@ -201,6 +213,15 @@ public class GridFragment extends Fragment implements LoaderManager.LoaderCallba
         if (!Utility.isConnected(getActivity())){
             favoriteMode = true;
             Log.v(LOG_TAG, "Connected to the internet: NO");
+
+            String message = "No internet connection.";
+            if (moviesFavoritesArray.length > 0) {
+                message = message + " Loading favorites.";
+            } else {
+                message = message + " No favorites selected yet.";
+            }
+
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         } else {
             Log.v(LOG_TAG, "Connected to the internet: YES");
 
@@ -236,81 +257,6 @@ public class GridFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onLoaderReset(Loader<Cursor> loader) {
         // No action for now
         Log.v(LOG_TAG,"Loader reset");
-    }
-
-    // =============================================================
-    //    INSERT/DELETE MOVIES FROM DATABASE VIA CONTENT PROVIDER
-    // =============================================================
-
-
-    public boolean movieExistsInDB(String movieId){
-
-        Cursor movieCursor = getActivity().getContentResolver().query(
-                MovieContract.MovieEntry.CONTENT_URI,
-                new String[]{MovieContract.MovieEntry._ID},
-                MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
-                new String[]{movieId},
-                null);
-
-        boolean exists = movieCursor.moveToFirst();
-
-        movieCursor.close();
-        return exists;
-    }
-
-    // Adds a movie to the database
-    public long insertFavoriteMovie(Movie movie) {
-        long movieEntryId;
-
-        // First, check if the movie with this city name exists in the db
-        Cursor movieCursor = getActivity().getContentResolver().query(
-                MovieContract.MovieEntry.CONTENT_URI,
-                new String[]{MovieContract.MovieEntry._ID},
-                MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
-                new String[]{movie.getId()},
-                null);
-
-        // If the movie already exists, returns its DB ID
-        if (movieCursor.moveToFirst()) {
-            int locationIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry._ID);
-            movieEntryId = movieCursor.getLong(locationIdIndex);
-        } else {
-            // If movie doesn't exist, then insert the values into de DB
-            ContentValues movieValues = new ContentValues();
-
-            movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getSynopsis());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPoster());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.getRating());
-            movieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, movie.getPopularity());
-
-
-            // Finally, insert location data into the database.
-            Uri insertedUri = getActivity().getContentResolver().insert(
-                    MovieContract.MovieEntry.CONTENT_URI,
-                    movieValues
-            );
-
-            // The resulting URI contains the ID for the row.  Extract the row ID from the Uri.
-            movieEntryId = ContentUris.parseId(insertedUri);
-        }
-
-        movieCursor.close();
-        return movieEntryId;
-    }
-
-    // Removes a movie from the database based on a movie ID
-    public int deleteFavoriteMovie(String movieId) {
-
-        int removedRows = getActivity().getContentResolver().delete(
-                MovieContract.MovieEntry.CONTENT_URI,
-                MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
-                new String[]{movieId}
-        );
-
-        return removedRows;
     }
 
     // ========== METHODS FOR SUPPORT FOR TABLES ===========

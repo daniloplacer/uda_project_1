@@ -15,7 +15,8 @@
          android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/MovieTitle"
-        android:text="Star Wars: The Force Awakens" />
+        android:text="Star Wars: The Force Awakens"
+        android:freezesText="true" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
@@ -29,7 +30,7 @@
             style="@style/MoviePosterDetail"
             android:src="@drawable/sw_image"
             android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"/>
+            android:layout_marginRight="3dp" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
@@ -40,14 +41,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/MovieInfoHeader"
-                android:text="Release date:" />
+                android:text="Release date:"
+                android:freezesText="true" />
 
             <TextView
                 android:id="@+id/detail_release_date_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/MovieInfoGeneric"
-                android:text="Dec 28, 2015"/>
+                android:text="Dec 28, 2015"
+                android:freezesText="true" />
 
             <Space
                 android:layout_width="match_parent"
@@ -57,14 +60,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/MovieInfoHeader"
-                android:text="Rating:" />
+                android:text="Rating:"
+                android:freezesText="true" />
 
             <TextView
                 android:id="@+id/detail_rating_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/MovieInfoRating"
-                android:text="7.85"    />
+                android:text="7.85"
+                android:freezesText="true"/>
 
             <Space
                 android:layout_width="match_parent"
@@ -75,7 +80,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/MovieFavoriteSwitch"
-                android:text="Favorite"    />
+                android:text="Favorite"
+                android:freezesText="true" />
 
         </LinearLayout>
 
@@ -89,14 +95,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/MovieInfoHeader"
-        android:text="Synopsis:" />
+        android:text="Synopsis:"
+        android:freezesText="true" />
 
     <TextView
         android:id="@+id/detail_synopsis_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/MovieInfoSynopsis"
-        android:text="Synopsis here"/>
+        android:text="Synopsis here"
+        android:freezesText="true" />
 
     <Space
         android:layout_width="match_parent"
@@ -106,7 +114,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/MovieInfoHeader"
-        android:text="Trailers:" />
+        android:text="Trailers:"
+        android:freezesText="true" />
 
     <Space
         android:layout_width="match_parent"
@@ -126,7 +135,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/MovieInfoHeader"
-        android:text="Reviews:" />
+        android:text="Reviews:"
+        android:freezesText="true" />
 
     <Space
         android:layout_width="match_parent"

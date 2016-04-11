@@ -36,9 +36,12 @@ public class FetchReviewsTask extends AsyncTask<String, Void, String> {
 
     private LinearLayout mReviewsList;
 
-    public FetchReviewsTask(Context context, LinearLayout list) {
+    private ArrayList<Review> mReviewsArray;
+
+    public FetchReviewsTask(Context context, LinearLayout list, ArrayList<Review> reviewsArray) {
         mContext = context;
         mReviewsList = list;
+        mReviewsArray = reviewsArray;
     }
 
     @Override
@@ -167,30 +170,38 @@ public class FetchReviewsTask extends AsyncTask<String, Void, String> {
                     "Number of reviews fetched from the internet: "
                             + array.length);
 
-            mReviewsList.removeAllViews();
+            mReviewsArray.clear();
+            mReviewsArray.addAll(Arrays.asList(array));
 
-            LayoutInflater inflater =
-                    (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            for (int i=0; i<array.length; i++) {
-                // Inflates the list item
-                View itemView = inflater.inflate(R.layout.list_item_review, null);
-
-                Review review = array[i];
-
-                // Sets the author and content text views
-                TextView textView = (TextView)itemView.findViewById(R.id.list_item_review_author_textview);
-                textView.setText(review.getAuthor());
-
-                textView = (TextView)itemView.findViewById(R.id.list_item_review_content_textview);
-                textView.setText(review.getContent());
-
-                // Adds the new item to the list
-                mReviewsList.addView(itemView);
-            }
+            addReviewsToContainer();
 
         } else {
             Log.e(LOG_TAG,"Was NOT able to read reviews data from the internet");
+        }
+    }
+
+    public void addReviewsToContainer(){
+
+        mReviewsList.removeAllViews();
+
+        LayoutInflater inflater =
+                (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        for (int i=0; i<mReviewsArray.size(); i++) {
+            // Inflates the list item
+            View itemView = inflater.inflate(R.layout.list_item_review, null);
+
+            Review review = mReviewsArray.get(i);
+
+            // Sets the author and content text views
+            TextView textView = (TextView)itemView.findViewById(R.id.list_item_review_author_textview);
+            textView.setText(review.getAuthor());
+
+            textView = (TextView)itemView.findViewById(R.id.list_item_review_content_textview);
+            textView.setText(review.getContent());
+
+            // Adds the new item to the list
+            mReviewsList.addView(itemView);
         }
     }
 }

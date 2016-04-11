@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,9 +38,12 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String> {
 
     private LinearLayout mTrailerList;
 
-    public FetchTrailersTask(Context context, LinearLayout list) {
+    private ArrayList<String> mTrailersArray;
+
+    public FetchTrailersTask(Context context, LinearLayout list, ArrayList<String> trailersArray) {
         mContext = context;
         mTrailerList = list;
+        mTrailersArray = trailersArray;
     }
 
     @Override
@@ -183,51 +187,59 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String> {
                     "Number of trailers fetched from the internet: "
                             + array.length);
 
-            mTrailerList.removeAllViews();
+            mTrailersArray.clear();
+            mTrailersArray.addAll(Arrays.asList(array));
 
-            LayoutInflater inflater =
-                    (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            for (int i=0; i<array.length; i++){
-                // Inflates the list item
-                View itemView = inflater.inflate(R.layout.list_item_trailer, null);
-
-                TextView textView = (TextView)itemView.findViewById(R.id.list_item_trailer_textview);
-                int textPosition = i+1;
-                textView.setText("Trailer " + textPosition);
-
-                // Uses setTag as the "memory" for this view when calling click listener
-                itemView.setTag(array[i]);
-
-                // Sets a new click listener to open a trailer via Intent
-                itemView.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        String trailerURL = (String) v.getTag();
-
-                        Uri playVideo = Uri.parse(trailerURL)
-                                .buildUpon()
-                                .build();
-
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(playVideo);
-
-                        if (intent.resolveActivity(mContext.getPackageManager()) != null) {
-                            mContext.startActivity(intent);
-                        } else {
-                            Log.d(LOG_TAG, "Couldn't call open trailer - no receiving apps installed!");
-                        }
-                    }
-
-                });
-
-                // Adds the new item to the list
-                mTrailerList.addView(itemView);
-            }
+            addTrailersToContainer();
 
         } else {
             Log.e(LOG_TAG,"Was NOT able to read trailer data from the internet");
+        }
+    }
+
+    public void addTrailersToContainer(){
+
+        mTrailerList.removeAllViews();
+
+        LayoutInflater inflater =
+                (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        for (int i=0; i<mTrailersArray.size(); i++){
+            // Inflates the list item
+            View itemView = inflater.inflate(R.layout.list_item_trailer, null);
+
+            TextView textView = (TextView)itemView.findViewById(R.id.list_item_trailer_textview);
+            int textPosition = i+1;
+            textView.setText("Trailer " + textPosition);
+
+            // Uses setTag as the "memory" for this view when calling click listener
+            itemView.setTag(mTrailersArray.get(i));
+
+            // Sets a new click listener to open a trailer via Intent
+            itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    String trailerURL = (String) v.getTag();
+
+                    Uri playVideo = Uri.parse(trailerURL)
+                            .buildUpon()
+                            .build();
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(playVideo);
+
+                    if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+                        mContext.startActivity(intent);
+                    } else {
+                        Log.d(LOG_TAG, "Couldn't call open trailer - no receiving apps installed!");
+                    }
+                }
+
+            });
+
+            // Adds the new item to the list
+            mTrailerList.addView(itemView);
         }
     }
 }

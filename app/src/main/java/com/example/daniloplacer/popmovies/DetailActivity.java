@@ -9,13 +9,14 @@ import android.view.MenuItem;
 /**
  * Created by daniloplacer on 1/23/16.
  */
-public class DetailActivity extends ActionBarActivity implements DetailFragment.Callback{
+public class DetailActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_detail);
+
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.movie_detail_container, new DetailFragment())
@@ -37,6 +38,4 @@ public class DetailActivity extends ActionBarActivity implements DetailFragment.
         }
     }
 
-    @Override
-    public void changeFavoriteValue(String movieId, boolean newFavoriteValue) {}
 }

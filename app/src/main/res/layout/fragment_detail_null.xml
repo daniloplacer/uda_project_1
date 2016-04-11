@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/NoMovie"
-        android:text="Select a movie to display" />
+        android:text="Select a movie to display"
+        android:freezesText="true" />
 
 </LinearLayout>

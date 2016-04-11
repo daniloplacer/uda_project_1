@@ -11,18 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity
-        implements GridFragment.Callback, DetailFragment.Callback {
+        implements GridFragment.Callback {
 
     // Change onActivityResult for a callback, and update Favorite movie when in tablet mode
 
     private final String DETAILFRAGMENT_TAG = "DETAIL_FRAG";
 
     private boolean mTwoPane;
-
-    public static final int FAVORITE_RETURN = 10;
-
-    public static final String INTENT_MOVIE_ID = "MOVIE_ID";
-    public static final String INTENT_NEW_FAVORITE_VALUE = "FAVORITE_VALUE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,37 +86,8 @@ public class MainActivity extends ActionBarActivity
             // If not, simply starts the new Activity
             Intent detailIntent = new Intent(this, DetailActivity.class);
             detailIntent.putExtra(Movie.class.getSimpleName(), movie);
-            startActivityForResult(detailIntent, FAVORITE_RETURN);
+            startActivity(detailIntent);
 
-        }
-
-    }
-
-    // In case the Detail Fragment was opened via intent, needs to recover the result
-    // via onActivityResult, as DetailActivity cannot access GridFragment
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == FAVORITE_RETURN) {
-            if (resultCode == RESULT_OK) {
-
-                String movieId = data.getStringExtra(INTENT_MOVIE_ID);
-                boolean newFavoriteValue = data.getBooleanExtra(INTENT_NEW_FAVORITE_VALUE, false);
-
-                this.changeFavoriteValue(movieId, newFavoriteValue);
-            }
-        }
-    }
-
-    // Calls GridFragment to change the favorite value of a movie
-    @Override
-    public void changeFavoriteValue(String movieId, boolean newFavoriteValue) {
-
-        GridFragment frag =
-                ((GridFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_movies));
-
-        if (frag != null) {
-            frag.updateFavoriteMovie(movieId, newFavoriteValue);
         }
 
     }
